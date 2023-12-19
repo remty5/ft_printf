@@ -6,40 +6,53 @@
 #    By: rvandepu <rvandepu@student.42lehavre.fr>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/16 17:53:36 by rvandepu          #+#    #+#              #
-#    Updated: 2023/11/13 17:45:42 by rvandepu         ###   ########.fr        #
+#    Updated: 2023/12/19 17:53:47 by rvandepu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := libftprintf.a
 
-SRC  := test.c \
+FILES  := ft_print \
+#FILES  := ft_printf \
+#		  ft_print \
 
-OBJ := $(SRC:%.c=%.o)
+TEST_BIN := tester
 
-LIB_PATH := libft
-LIB		 := libft.a
+OBJ := $(FILES:%=%.o)
 
-CPPFLAGS += -I$(LIB_PATH)
+LIB_DIR := libft
+LIB		:= libft.a
+
+CPPFLAGS += -I$(LIB_DIR)
 CFLAGS   += -Wall -Wextra -Werror
-LDFLAGS  += -static -L$(LIB_PATH)
+LDFLAGS  += -L$(LIB_DIR)
 LDLIBS   += -lft
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re bonus test
 
 all: $(NAME)
 
 clean:
-	$(RM) $(OBJ) $(OBJB)
+	$(RM) $(OBJ) $(TEST_BIN)
 
 fclean: clean
-	$(MAKE) -C libft fclean
+	$(MAKE) -C $(LIB_DIR) fclean
 	$(RM) $(NAME)
 
 re: fclean all
 
+bonus: $(NAME)
+
+test: re $(TEST_BIN)
+	./$(TEST_BIN)
+
+$(TEST_BIN): CFLAGS := -g
+$(TEST_BIN): LDFLAGS := -L.
+$(TEST_BIN): LDLIBS := -lftprintf
+
 $(LIB):
-	$(MAKE) -C $(LIB_PATH) $@
+	$(MAKE) -C $(LIB_DIR) $@
 
 $(NAME): $(LIB) $(OBJ)
 	$(AR) rcs $@ $(OBJ)
-	echo "OPEN $@\nADDLIB $(LIB_PATH)/$(LIB)\nSAVE\nEND" | $(AR) -M
+	echo "OPEN $@\nADDLIB $(LIB_DIR)/$(LIB)\nSAVE\nEND" | $(AR) -M
