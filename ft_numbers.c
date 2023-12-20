@@ -6,35 +6,34 @@
 /*   By: rvandepu <rvandepu@student.42lehavre.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 16:25:54 by rvandepu          #+#    #+#             */
-/*   Updated: 2023/12/19 18:35:40 by rvandepu         ###   ########.fr       */
+/*   Updated: 2023/12/20 14:05:54 by rvandepu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-#define CHARS "0123456789abcdef"
-
-int	ft_putnbr_base(long n, char base, t_flags *flags)
+int	ft_spec_dec(t_flags *flags, va_list args)
 {
-	char	b[102];
-	int		i;
-	int		j;
+	return (ft_putnbr_base(va_arg(args, int), 10, flags));
+}
 
-	ft_bzero(b, 102);
-	if (n < 0)
-		b[0] = '-';
-	i = 100;
-	while (n != 0)
-	{
-		b[i--] = CHARS[n % base * ((n > 0) - (n < 0))];
-		n /= base;
-	}
-	if (i == 100)
-		b[100] = '0';
-	i = 0;
-	j = 0;
-	while (i < 101)
-		if (b[i++])
-			b[j++] = b[i - 1];
-	return (ft_printstr(flags, b, j));
+int	ft_spec_uns(t_flags *flags, va_list args)
+{
+	return (ft_putnbr_base(va_arg(args, unsigned int), 10, flags));
+}
+
+int	ft_spec_oct(t_flags *flags, va_list args)
+{
+	return (ft_putnbr_base(va_arg(args, unsigned int), 8, flags));
+}
+
+int	ft_spec_hex(t_flags *flags, va_list args)
+{
+	return (ft_putnbr_base(va_arg(args, unsigned int), 16, flags));
+}
+
+int	ft_spec_hex_upper(t_flags *flags, va_list args)
+{
+	flags->upper = true;
+	return (ft_spec_hex(flags, args));
 }
