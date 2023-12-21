@@ -6,7 +6,7 @@
 /*   By: rvandepu <rvandepu@student.42lehavre.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 00:31:58 by rvandepu          #+#    #+#             */
-/*   Updated: 2023/12/20 16:28:04 by rvandepu         ###   ########.fr       */
+/*   Updated: 2023/12/21 21:24:22 by rvandepu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ static int (*const	g_spec[])(t_flags *flags, va_list args) = {\
 	['c'] = &ft_spec_char, \
 	['s'] = &ft_spec_string, \
 	['p'] = &ft_spec_ptr, \
+	['%'] = &ft_spec_percent, \
 };
 
 int	ft_vprintf(const char *format, va_list args)
 {
 	t_flags	flags;
-	int		ret;
 	int		next;
 
 	ft_bzero(&flags, sizeof(t_flags));
@@ -35,9 +35,11 @@ int	ft_vprintf(const char *format, va_list args)
 	if (next)
 		return (ft_printstr(&flags, format, next)
 			+ ft_vprintf(format + next, args));
-	ret = 0;
-	g_spec['s'](&flags, args);
-	return (ft_vprintf(format, args));
+	next = ft_parse_spec(format, args, &flags);
+	if (next)
+		return (g_spec[(int)flags.spec](&flags, args)
+			+ ft_vprintf(format + next, args));
+	return (0);
 }
 
 int	ft_printf(const char *format, ...)

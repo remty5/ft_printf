@@ -6,15 +6,16 @@
 /*   By: rvandepu <rvandepu@student.42lehavre.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 23:51:46 by rvandepu          #+#    #+#             */
-/*   Updated: 2023/12/20 15:51:39 by rvandepu         ###   ########.fr       */
+/*   Updated: 2023/12/21 21:48:11 by rvandepu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include <limits.h>
 #include <stdio.h>
 
 int	main(void)
 {
-	printf("'%s'\n", NULL);
-	//ft_printf("Hello world! %d\n", 123);
+	printf("%0#4o\n", 42);
+	ft_printf("%0#4o\n", 42);
 }

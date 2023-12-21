@@ -6,7 +6,7 @@
 /*   By: rvandepu <rvandepu@student.42lehavre.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 16:39:54 by rvandepu          #+#    #+#             */
-/*   Updated: 2023/12/20 16:21:36 by rvandepu         ###   ########.fr       */
+/*   Updated: 2023/12/21 21:19:30 by rvandepu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,18 @@ int	ft_printstr(t_flags *flags, const char *str, int len)
 		ret = flags->width;
 	else
 		ret = len;
-	while (flags->leftjust && len < flags->width--)
-		write(1, g_space_zero + flags->zero, 1);
+	while (!flags->leftjust && len < flags->width--)
+		write(1, &" 0" + flags->zero, 1);
 	i = 0;
 	while (flags->upper && i < len)
 	{
-		c = ft_toupper(str[i]);
+		c = ft_toupper(str[i++]);
 		write(1, &c, 1);
 	}
 	if (!flags->upper)
 		write(1, str, len);
 	while (len < flags->width--)
-		write(1, g_space_zero, 1);
+		write(1, &" ", 1);
 	return (ret);
 }
 
@@ -51,8 +51,21 @@ int	ft_spec_string(t_flags *flags, va_list args)
 	int		len;
 
 	str = va_arg(args, char *);
-	if (str == NULL)
+	if (str == NULL && (flags->precision >= 6 || flags->precision == -1))
 		return (ft_printstr(flags, "(null)", 6));
-	len = ft_strlen(str);
+	else if (str == NULL)
+		return (0);
+	len = 0;
+	if (flags->precision >= 0)
+		while (str[len] && len < flags->precision)
+			len++;
+	else
+		len = ft_strlen(str);
 	return (ft_printstr(flags, str, len));
+}
+
+int	ft_spec_percent(t_flags *flags, va_list args)
+{
+	(void) args;
+	return (ft_printstr(flags, &flags->spec, 1));
 }

@@ -6,15 +6,17 @@
 #    By: rvandepu <rvandepu@student.42lehavre.fr>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/16 17:53:36 by rvandepu          #+#    #+#              #
-#    Updated: 2023/12/19 17:53:47 by rvandepu         ###   ########.fr        #
+#    Updated: 2023/12/21 21:24:12 by rvandepu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := libftprintf.a
 
-FILES  := ft_print \
-#FILES  := ft_printf \
-#		  ft_print \
+FILES  := ft_printf \
+		  ft_parser \
+		  ft_string \
+		  ft_putnbr \
+		  ft_numbers \
 
 TEST_BIN := tester
 
@@ -25,8 +27,8 @@ LIB		:= libft.a
 
 CPPFLAGS += -I$(LIB_DIR)
 CFLAGS   += -Wall -Wextra -Werror
-LDFLAGS  += -L$(LIB_DIR)
-LDLIBS   += -lft
+#LDFLAGS  += -L$(LIB_DIR)
+#LDLIBS   += -lft
 
 .PHONY: all clean fclean re bonus test
 
@@ -43,10 +45,10 @@ re: fclean all
 
 bonus: $(NAME)
 
+test: CFLAGS += -g
 test: re $(TEST_BIN)
 	./$(TEST_BIN)
 
-$(TEST_BIN): CFLAGS := -g
 $(TEST_BIN): LDFLAGS := -L.
 $(TEST_BIN): LDLIBS := -lftprintf
 
@@ -55,4 +57,4 @@ $(LIB):
 
 $(NAME): $(LIB) $(OBJ)
 	$(AR) rcs $@ $(OBJ)
-	echo "OPEN $@\nADDLIB $(LIB_DIR)/$(LIB)\nSAVE\nEND" | $(AR) -M
+	printf "OPEN $@\nADDLIB $(LIB_DIR)/$(LIB)\nSAVE\nEND" | $(AR) -M
