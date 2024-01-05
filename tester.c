@@ -6,7 +6,7 @@
 /*   By: rvandepu <rvandepu@student.42lehavre.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 23:51:46 by rvandepu          #+#    #+#             */
-/*   Updated: 2023/12/21 21:48:11 by rvandepu         ###   ########.fr       */
+/*   Updated: 2024/01/05 16:16:47 by rvandepu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,6 @@
 
 int	main(void)
 {
-	printf("%0#4o\n", 42);
-	ft_printf("%0#4o\n", 42);
+	printf("%d\n", printf("%.s\n", "coucou"));
+	printf("%d\n", ft_printf("%.s\n", "coucou"));
 }

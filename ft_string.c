@@ -6,7 +6,7 @@
 /*   By: rvandepu <rvandepu@student.42lehavre.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 16:39:54 by rvandepu          #+#    #+#             */
-/*   Updated: 2023/12/21 21:19:30 by rvandepu         ###   ########.fr       */
+/*   Updated: 2024/01/05 15:30:46 by rvandepu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	ft_spec_string(t_flags *flags, va_list args)
 	if (str == NULL && (flags->precision >= 6 || flags->precision == -1))
 		return (ft_printstr(flags, "(null)", 6));
 	else if (str == NULL)
-		return (0);
+		return (ft_printstr(flags, NULL, 0));
 	len = 0;
 	if (flags->precision >= 0)
 		while (str[len] && len < flags->precision)

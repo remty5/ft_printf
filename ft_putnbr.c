@@ -6,7 +6,7 @@
 /*   By: rvandepu <rvandepu@student.42lehavre.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 16:25:54 by rvandepu          #+#    #+#             */
-/*   Updated: 2023/12/21 21:46:35 by rvandepu         ###   ########.fr       */
+/*   Updated: 2024/01/05 16:07:11 by rvandepu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,28 +39,28 @@ static void	ft_nbr_prefix(char *b, long n, bool is_signed, t_flags *flags)
 
 int	ft_putnbr_base(long n, char base, t_flags *flags)
 {
-	char	b[101];
+	char	b[1001];
 	int		i;
 	int		j;
 
-	ft_bzero(b, 101);
+	ft_bzero(b, 1001);
 	ft_nbr_prefix(b, n, true, flags);
-	i = 100;
+	i = 1000;
 	while (n != 0)
 	{
 		b[i--] = CHARS[n % base * ((n > 0) - (n < 0))];
 		n /= base;
 	}
-	if (i == 100 && flags->precision != 0)
-		b[100] = '0';
+	if (i == 1000 && flags->precision != 0)
+		b[1000] = '0';
 	i = 3;
 	j = 0;
-	while (i < 101)
+	while (i < 1001)
 		j += !!b[i++];
 	ft_memset(b + 3, '0', (flags->precision - j) * (flags->precision - j > 0));
 	i = 0;
 	j = 0;
-	while (i < 101)
+	while (i < 1001)
 		if (b[i++])
 			b[j++] = b[i - 1];
 	return (ft_printstr(flags, b, j));
@@ -77,7 +77,7 @@ static int	ft_putptr(unsigned long long n, t_flags *flags)
 	i = 100;
 	while (n != 0)
 	{
-		b[i--] = CHARS[n % 16 * ((n > 0) - (n < 0))];
+		b[i--] = CHARS[n % 16];
 		n /= 16;
 	}
 	i = 0;

@@ -6,7 +6,7 @@
 /*   By: rvandepu <rvandepu@student.42lehavre.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 16:02:38 by rvandepu          #+#    #+#             */
-/*   Updated: 2023/12/21 21:23:16 by rvandepu         ###   ########.fr       */
+/*   Updated: 2024/01/05 15:08:45 by rvandepu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,23 @@ static void	ft_handle_flag(char flag, t_flags *flags)
 		flags->zero = true;
 }
 
-static int	ft_parse_nbr(const char *format, int *n, va_list args)
+static int	ft_parse_nbr(const char *format, t_flags *flags, bool w, va_list va)
 {
 	int	i;
+	int	*n;
 
+	if (w)
+		n = &flags->width;
+	else
+		n = &flags->precision;
 	if (*format == '*')
 	{
-		*n = va_arg(args, int);
+		*n = va_arg(va, int);
+		if (w && *n < 0)
+			flags->leftjust = true;
+		else if (*n < 0)
+			*n = -1;
+		*n *= ((*n > 0) - (*n < 0)) * w + !w;
 		return (1);
 	}
 	i = 0;
@@ -81,13 +91,15 @@ int	ft_parse_spec(const char *format, va_list args, t_flags *flags)
 	i = 1;
 	while (ft_is_in(format[i], FLAGS))
 		ft_handle_flag(format[i++], flags);
-	i += ft_parse_nbr(format + i, &flags->width, args);
+	i += ft_parse_nbr(format + i, flags, true, args);
 	if (format[i] == '.' && i++)
-		i += ft_parse_nbr(format + i, &flags->precision, args);
+		i += ft_parse_nbr(format + i, flags, false, args);
 	else
 		flags->precision = -1;
 	if (flags->zero && flags->width && flags->precision > 0)
 		flags->zero = false;
+	if (format[i] == '%')
+		ft_bzero(flags, sizeof(t_flags));
 	if (ft_is_in(format[i], SPECS))
 		flags->spec = format[i++];
 	return (i);
